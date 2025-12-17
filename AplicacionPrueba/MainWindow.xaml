@@ -1,0 +1,91 @@
+﻿<Window x:Class="AplicacionPrueba.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mis="clr-namespace:MiLibreriaWPF;assembly=MiLibreriaWPF"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AplicacionPrueba"
+        x:Name="ventanaPrincipal"
+        mc:Ignorable="d"
+        Title="Antonio Salces Alcaraz - Proyecto final U3" Height="700" Width="900">
+    <Window.Resources>
+        <local:MayorQue75Converter x:Key="MayorQue75Converter"/>
+
+        <Style x:Key="EstiloBotonAmarillo" TargetType="{x:Type mis:BotonRedondo}">
+            <Setter Property="Background" Value="Yellow"/>
+        </Style>
+
+        <Style x:Key="EstiloConTrigger" TargetType="mis:BotonRedondo">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Puntuacion, Source={x:Reference ventanaPrincipal}, Converter={StaticResource MayorQue75Converter}}" Value="True">
+                    <Setter Property="Foreground" Value="Green"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+
+            <GroupBox Header="Ejercicio 1: CampoDeTextoDP" Margin="0,0,0,20" Padding="10">
+                <StackPanel>
+                    <mis:CampoDeTextoDP Etiqueta="Nombre Completo:" Valor="[Valor inicial]"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Ejercicio 2: BotonRedondo con Style Externo" Margin="0,0,0,20" Padding="10">
+                <StackPanel>
+                    <mis:BotonRedondo Style="{StaticResource EstiloBotonAmarillo}" 
+                                     Content="Botón"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Ejercicio 3: ToggleColorButton" Margin="0,0,0,20" Padding="10">
+                <StackPanel>
+                    <mis:ToggleColorButton Content="Click Me!" 
+                                          Width="150" 
+                                          Height="50"
+                                          FontWeight="Bold"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Ejercicio 4: Mapeo XMLNS y Binding con ElementName" Margin="0,0,0,20" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Escribe un mensaje:" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtMensaje" 
+                             Text="Mensaje para Tarjeta" 
+                             Margin="0,0,0,10"
+                             Padding="5"/>
+
+                    <TextBlock Text="El TextBlock de TarjetaInfo no se puede enlazar externamente" 
+                               TextWrapping="Wrap"
+                               Foreground="Red"
+                               Margin="0,0,0,10"/>
+
+                    <mis:TarjetaInfo/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Ejercicio 5: Trigger con DependencyProperty (>75 = Verde)" Margin="0,0,0,20" Padding="10">
+                <StackPanel>
+                    <mis:BotonRedondo x:Name="btnPuntuacion" 
+                                     Style="{StaticResource EstiloConTrigger}"
+                                     Content="Botón"
+                                     Margin="0,0,0,15"/>
+
+                    <TextBlock Text="Cambia la puntuación (si es mayor que 75, el texto del botón se pone verde):" 
+                               Margin="0,0,0,5"
+                               TextWrapping="Wrap"/>
+                    <TextBox Text="{Binding Puntuacion, UpdateSourceTrigger=PropertyChanged}" 
+                             Width="200" 
+                             HorizontalAlignment="Left"
+                             Padding="5"
+                             Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding Puntuacion, StringFormat='Puntuación actual: {0}'}" 
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </GroupBox>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>
